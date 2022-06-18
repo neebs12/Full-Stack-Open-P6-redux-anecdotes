@@ -5,7 +5,16 @@ import { incrementVote } from '../reducers/anecdoteReducer'
 import { changeNotification } from '../reducers/notificationReducer'
 
 function AnecdoteList() {
-  const anecdotes = useSelector(state => [...state.anecdote].sort((a, b) => b.votes - a.votes)) // highest to lowest votes
+  const anecdotes = useSelector(state => {
+    // filter the state.anecdote first according to content of state.filter
+    let filterString = state.filter
+    let filteredAnecdotes = state.anecdote.filter(s => {
+      const content = s.content
+      return (new RegExp(filterString, 'gi')).test(content)
+    })
+    return [...filteredAnecdotes].sort((a, b) => b.votes - a.votes)
+  }) // highest to lowest votes
+  
   const dispatch = useDispatch()
 
   const vote = (id) => {
