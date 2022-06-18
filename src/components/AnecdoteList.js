@@ -4,14 +4,13 @@ import { useSelector, useDispatch } from 'react-redux'
 import { incrementVote } from '../reducers/anecdoteReducer'
 
 function AnecdoteList() {
-  const anecdotes = useSelector(state => [...state].sort((a, b) => b.votes - a.votes)) // highest to lowest votes
+  const anecdotes = useSelector(state => [...state.anecdote].sort((a, b) => b.votes - a.votes)) // highest to lowest votes
   const dispatch = useDispatch()
 
   const vote = (id) => dispatch(incrementVote(id))
 
   return (
     <>
-      <h2>Anecdotes</h2>
       {anecdotes.map(anecdote =>
         <div key={anecdote.id}>
           <div>

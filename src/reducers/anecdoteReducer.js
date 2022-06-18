@@ -1,3 +1,5 @@
+import { createSlice } from "@reduxjs/toolkit"
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -21,42 +23,75 @@ const initialState = anecdotesAtStart.map(asObject)
 
 /*Action Creators*/
 
-export const incrementVote = (id) => {
-  return {
-    type: 'VOTE',
-    data: {id}
-  }
-}
+// export const incrementVote = (id) => {
+//   return {
+//     type: 'VOTE',
+//     data: {id}
+//   }
+// }
 
-export const addAnecdote = (anecdote) => {
-  return {
-    type: 'ADD_ANECDOTE',
-    data: {anecdote}
-  }
-}
+// export const addAnecdote = (anecdote) => {
+//   return {
+//     type: 'ADD_ANECDOTE',
+//     data: {anecdote}
+//   }
+// }
 
 /*Reducers*/
 
-const reducer = (state = initialState, action) => {
-  console.log('state now: ', state)
-  console.log('action', action)
-  // this is where the switch case lives
-  switch (action.type) {
-    case 'VOTE':
-      return [...state].map(s => {
-        return s.id === action.data.id 
-          ? {...s, votes: s.votes + 1} 
-          : s
-      })
-    case 'ADD_ANECDOTE':
-      return state.concat({
-        content: action.data.anecdote,
-        id: getId(),
-        votes: 0,
-      })
-    default:
-      return state // unchanged
-  }
-}
+// const reducer = (state = initialState, action) => {
+//   console.log('state now: ', state)
+//   console.log('action', action)
+//   // this is where the switch case lives
+//   switch (action.type) {
+//     case 'VOTE':
+//       return [...state].map(s => {
+//         return s.id === action.data.id 
+//           ? {...s, votes: s.votes + 1} 
+//           : s
+//       })
+//     case 'ADD_ANECDOTE':
+//       return state.concat({
+//         content: action.data.anecdote,
+//         id: getId(),
+//         votes: 0,
+//       })
+//     default:
+//       return state // unchanged
+//   }
+// }
 
-export default reducer
+// export default reducer
+
+const anecdoteSlice = createSlice({
+  name: 'anecdote',
+  initialState: initialState, // imperative
+  reducers: {
+    incrementVote(state, action) {
+      // can mutate state within createSlice
+      // state is an array (at this location)
+      
+      const id = action.payload
+      const specificState = state.find(s => s.id === id)
+      if (specificState) {
+        // found a specific state
+        // mutation
+        specificState.votes = specificState.votes + 1
+      }
+      // no need to return due to mutation
+    },
+    addAnecdote(state, action) {
+      // console.log(state)
+      const anecdote = action.payload
+      const newAnecdote = {
+        content: anecdote,
+        id: getId(),
+        votes: 0
+      }
+      state.push(newAnecdote) // mutation, no return
+    }
+  }
+})
+
+export const {incrementVote, addAnecdote} = anecdoteSlice.actions
+export default anecdoteSlice.reducer // not .reducers, ffs
