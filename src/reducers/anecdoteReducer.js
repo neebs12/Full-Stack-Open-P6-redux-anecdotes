@@ -44,8 +44,9 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'VOTE':
       return [...state].map(s => {
-        return s.id === action.data.id ? 
-          {...s, votes: s.votes + 1} : s
+        return s.id === action.data.id 
+          ? {...s, votes: s.votes + 1} 
+          : s
       })
     case 'ADD_ANECDOTE':
       return state.concat({
