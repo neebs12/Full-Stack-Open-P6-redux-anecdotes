@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 const App = () => {
   // these are present here because <Provider store={store}>...</Provider>
   // useSelector essentially fetches the state then passes it through a function that processes it (typically filters with minor transformations?)
-  const anecdotes = useSelector(state => state)
-  const dispatch = useDispatch()
+  const anecdotes = useSelector(state => state) // these are hooks
+  const dispatch = useDispatch() // these are hooks, this re-renders!
 
   const vote = (id) => {
     console.log('vote', id)
@@ -16,6 +16,18 @@ const App = () => {
     }
     // this will be dispatched to the registered reducer
     // does this rerender the component?
+    dispatch(action)
+  }
+
+  const addAnecdote = (event) => {
+    event.preventDefault() // form submission?
+    let formDataObject = event.target
+    let specificInputObject = formDataObject.anecdote
+    let val = specificInputObject.value
+    const action = {
+      type: 'ADD_ANECDOTE',
+      data: {anecdote: val}
+    }
     dispatch(action)
   }
 
@@ -34,8 +46,8 @@ const App = () => {
         </div>
       )}
       <h2>create new</h2>
-      <form>
-        <div><input /></div>
+      <form onSubmit={(e) => addAnecdote(e)}>
+        <div><input name="anecdote"/></div>
         <button>create</button>
       </form>
     </div>

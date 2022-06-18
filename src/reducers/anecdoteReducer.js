@@ -29,6 +29,12 @@ const reducer = (state = initialState, action) => {
         return s.id === action.data.id ? 
           {...s, votes: s.votes + 1} : s
       })
+    case 'ADD_ANECDOTE':
+      return state.concat({
+        content: action.data.anecdote,
+        id: getId(),
+        votes: 0,
+      })
     default:
       return state // unchanged
   }
