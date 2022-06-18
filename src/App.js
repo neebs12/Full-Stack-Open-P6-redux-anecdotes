@@ -2,6 +2,8 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { incrementVote, addAnecdote } from './reducers/anecdoteReducer'
 
+import AnecdoteForm from './components/AnecdoteForm'
+
 const App = () => {
   // these are present here because <Provider store={store}>...</Provider>
   // useSelector essentially fetches the state then passes it through a function that processes it (typically filters with minor transformations?)
@@ -11,11 +13,6 @@ const App = () => {
   const vote = (id) => {
     // incrementVote is a action creator
     dispatch(incrementVote(id))
-  }
-
-  const submitAnecdote = (event) => {
-    event.preventDefault() // form submission?
-    dispatch(addAnecdote(event.target.anecdote.value))
   }
 
   return (
@@ -32,11 +29,7 @@ const App = () => {
           </div>
         </div>
       )}
-      <h2>create new</h2>
-      <form onSubmit={(e) => submitAnecdote(e)}>
-        <div><input name="anecdote"/></div>
-        <button>create</button>
-      </form>
+      <AnecdoteForm />
     </div>
   )
 }
