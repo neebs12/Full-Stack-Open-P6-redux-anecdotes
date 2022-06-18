@@ -5,9 +5,11 @@ import { Provider } from 'react-redux'
 import App from './App'
 import reducer from './reducers/anecdoteReducer'
 
+// creation of a store from a reducer
 const store = createStore(reducer)
 
 ReactDOM.createRoot(document.getElementById('root')).render(
+  // This is where the link between the store and the application is made. Via the `Provider` component of `react-redux`
   <Provider store={store}>
     <App />
   </Provider>

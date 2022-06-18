@@ -7,9 +7,9 @@ const anecdotesAtStart = [
   'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
 ]
 
-const getId = () => (100000 * Math.random()).toFixed(0)
+const getId = () => (100000 * Math.random()).toFixed(0) // used of ini state construction
 
-const asObject = (anecdote) => {
+const asObject = (anecdote) => { // used for initial state construction
   return {
     content: anecdote,
     id: getId(),
@@ -22,8 +22,16 @@ const initialState = anecdotesAtStart.map(asObject)
 const reducer = (state = initialState, action) => {
   console.log('state now: ', state)
   console.log('action', action)
-
-  return state
+  // this is where the switch case lives
+  switch (action.type) {
+    case 'VOTE':
+      return [...state].map(s => {
+        return s.id === action.data.id ? 
+          {...s, votes: s.votes + 1} : s
+      })
+    default:
+      return state // unchanged
+  }
 }
 
 export default reducer
