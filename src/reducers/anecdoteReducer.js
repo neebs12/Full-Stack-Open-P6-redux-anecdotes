@@ -21,48 +21,6 @@ const asObject = (anecdote) => { // used for initial state construction
 
 const initialState = anecdotesAtStart.map(asObject)
 
-/*Action Creators*/
-
-// export const incrementVote = (id) => {
-//   return {
-//     type: 'VOTE',
-//     data: {id}
-//   }
-// }
-
-// export const addAnecdote = (anecdote) => {
-//   return {
-//     type: 'ADD_ANECDOTE',
-//     data: {anecdote}
-//   }
-// }
-
-/*Reducers*/
-
-// const reducer = (state = initialState, action) => {
-//   console.log('state now: ', state)
-//   console.log('action', action)
-//   // this is where the switch case lives
-//   switch (action.type) {
-//     case 'VOTE':
-//       return [...state].map(s => {
-//         return s.id === action.data.id 
-//           ? {...s, votes: s.votes + 1} 
-//           : s
-//       })
-//     case 'ADD_ANECDOTE':
-//       return state.concat({
-//         content: action.data.anecdote,
-//         id: getId(),
-//         votes: 0,
-//       })
-//     default:
-//       return state // unchanged
-//   }
-// }
-
-// export default reducer
-
 const anecdoteSlice = createSlice({
   name: 'anecdote',
   initialState: initialState, // imperative

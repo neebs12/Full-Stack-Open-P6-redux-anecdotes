@@ -13,6 +13,6 @@ const notificationSlice = createSlice({
   }
 })
 
-export const { changeNotification } = notificationSlice
+export const { changeNotification } = notificationSlice.actions
 export default notificationSlice.reducer // n combined reducers
 
