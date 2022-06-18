@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 const App = () => {
   // these are present here because <Provider store={store}>...</Provider>
   // useSelector essentially fetches the state then passes it through a function that processes it (typically filters with minor transformations?)
-  const anecdotes = useSelector(state => state) // these are hooks
+  const anecdotes = useSelector(state => [...state].sort((a, b) => b.votes - a.votes)) // these are hooks, also sorts in place
   const dispatch = useDispatch() // these are hooks, this re-renders!
 
   const vote = (id) => {
