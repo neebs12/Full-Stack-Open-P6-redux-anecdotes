@@ -7,29 +7,18 @@ import AnecdoteList from './components/AnecdoteList'
 import Filter from './components/Filter'
 import Notification from './components/Notification'
 
-// ACTION CREATORS
-import { addAnecdote } from './reducers/anecdoteReducer'
-
-// SERVICES
-import anecdoteServices from './services/anecdotes'
+// THUNK - merged asnc operations with action creation!
+// -- asynchronous action creators
+import { initializeAnecdotes } from './reducers/anecdoteReducer'
 
 const App = () => {
   // this is where we use getAll to dispatch initial request to server about data that should be rendered first!
   const dispatch = useDispatch()
 
   useEffect(() => {
-    // preserving async await, via iife, kinda dumb
-    (async () => {
-      const initialAnecdotes = await anecdoteServices.getAll()
-      // then assign to redux store via action creator then dispatch
-      // assuming that we get an array of obj [{..}, {..}, ..]
-      initialAnecdotes.forEach(anecdote => {
-        /*this is where we dispatch!*/
-        dispatch(addAnecdote(anecdote))
-      })
-    })()
-
-  }, [dispatch])
+    // initial execution is returns an async function!
+    dispatch(initializeAnecdotes())
+  }, [dispatch]) // [dispatch] syntax is for eslint
 
   return (
     <div>

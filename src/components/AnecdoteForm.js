@@ -14,14 +14,9 @@ function AnecdoteForm() {
     const anecdoteString = e.target.anecdote.value
     e.target.anecdote.value = '' // clearing input
 
-    // add anecdote!
-    const createdAnecdote = await anecdoteServices.addAnecdote({content: anecdoteString, votes: 0})
-
-    // contains the 
-    
-    // note, that the subscribed listener is running twice due to TWO dispatches, see below
-    dispatch(addAnecdote(createdAnecdote))
-    dispatch(changeNotification(`The anecdote: "${createdAnecdote.content}" has been added!!!`))
+    // note of the async action creation nature of addNote. therefore change that changeNotification will visually change contents of notification prior it being reflected in the backend!
+    dispatch(addAnecdote(anecdoteString))
+    dispatch(changeNotification(`The anecdote: "${anecdoteString}" has been added!!!`))
   }
 
   return (

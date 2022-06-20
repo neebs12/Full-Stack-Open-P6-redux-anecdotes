@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 
+import anecdoteServices from "../services/anecdotes"
+
 const anecdotesAtStart = [
   // 'If it hurts, do it more often',
   // 'Adding manpower to a late software project makes it later!',
@@ -38,21 +40,37 @@ const anecdoteSlice = createSlice({
       }
       // no need to return due to mutation
     },
-    addAnecdote(state, action) {
-      // console.log(state)
+    appendAnecdote(state, action) {
       const anecdote = action.payload
-      // if anecdote.content is true, expression evals to it
-      // if is false, it evals to the anecdote value instead
-      // -- this is for compatibility with refrac for 6.13
-      const newAnecdote = {
-        content: (anecdote.content || anecdote) ,
-        id: (anecdote.id || getId()),
-        votes: (anecdote.votes || 0)
-      }
-      state.push(newAnecdote) // mutation, no return
+      state.push(anecdote)
     }
   }
 })
 
-export const {incrementVote, addAnecdote} = anecdoteSlice.actions
+export const {incrementVote, appendAnecdote} = anecdoteSlice.actions
+
+// THUNKS - async action creators!
+export const initializeAnecdotes = () => {
+  return async (dispatch) => {
+    const anecdotes = await anecdoteServices.getAll()
+    anecdotes.forEach(a => {
+      // dispatch(anecdoteSlice.appendAnecodte(a))
+      dispatch(appendAnecdote(a)) // action creator in scope
+    })
+  }
+}
+
+export const addAnecdote = (anecdoteString) => {
+  const prelimAnecdoteObj = {
+    content: anecdoteString, // config to be at content property
+    votes: 0 // default 0 votes
+  }
+  return async (dispatch) => {
+    // here we send prelim object to the server
+    const receipt = await anecdoteServices.addAnecdote(prelimAnecdoteObj)
+    // then receipt will have the .id now!, then this is what is sent to the action creator: appendAnecdote
+    dispatch(appendAnecdote(receipt))
+  }
+}
+
 export default anecdoteSlice.reducer // not .reducers, ffs
