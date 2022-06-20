@@ -15,6 +15,11 @@ const addAnecdote = async (anecdote) => {
   return response.data // RESTful is created record
 }
 
+const updateAnecdote = async (id, anecdote) => {
+  // use of PUT (.put)
+  const response = await axios.put(`${baseUrl}/anecdotes/${id}`)
+}
+
 const exportObj = { 
   getAll,
   addAnecdote,

@@ -73,4 +73,10 @@ export const addAnecdote = (anecdoteString) => {
   }
 }
 
+export const changeVote = (id) => {
+  return async (dispatch) => {
+    // 
+  }
+}
+
 export default anecdoteSlice.reducer // not .reducers, ffs
