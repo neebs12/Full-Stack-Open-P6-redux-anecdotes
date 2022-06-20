@@ -4,15 +4,24 @@ import { useDispatch } from 'react-redux'
 import { addAnecdote } from '../reducers/anecdoteReducer'
 import { changeNotification } from '../reducers/notificationReducer' 
 
+// SERVICES
+import anecdoteServices from '../services/anecdotes'
+
 function AnecdoteForm() {
   const dispatch = useDispatch()
-  const submitAnecdote = (e) => {
+  const submitAnecdote = async (e) => {
     e.preventDefault()
     const anecdoteString = e.target.anecdote.value
     e.target.anecdote.value = '' // clearing input
+
+    // add anecdote!
+    const createdAnecdote = await anecdoteServices.addAnecdote({content: anecdoteString, votes: 0})
+
+    // contains the 
+    
     // note, that the subscribed listener is running twice due to TWO dispatches, see below
-    dispatch(addAnecdote(anecdoteString))
-    dispatch(changeNotification(`The anecdote: "${anecdoteString}" has been added!!!`))
+    dispatch(addAnecdote(createdAnecdote))
+    dispatch(changeNotification(`The anecdote: "${createdAnecdote.content}" has been added!!!`))
   }
 
   return (

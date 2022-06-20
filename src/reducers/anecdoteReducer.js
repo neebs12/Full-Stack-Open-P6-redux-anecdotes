@@ -46,8 +46,8 @@ const anecdoteSlice = createSlice({
       // -- this is for compatibility with refrac for 6.13
       const newAnecdote = {
         content: (anecdote.content || anecdote) ,
-        id: getId(),
-        votes: 0
+        id: (anecdote.id || getId()),
+        votes: (anecdote.votes || 0)
       }
       state.push(newAnecdote) // mutation, no return
     }

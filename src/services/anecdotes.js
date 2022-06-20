@@ -10,14 +10,13 @@ const getAll = async () => {
   return response.data
 }
 
-const addAnAnecdote = async (anecdote) => {
+const addAnecdote = async (anecdote) => {
   const response = await axios.post(`${baseUrl}/anecdotes`, anecdote)
   return response.data // RESTful is created record
 }
 
-export { 
+const exportObj = { 
   getAll,
-  addAnAnecdote,
+  addAnecdote,
 }
-
-// export default exportObj
+export default exportObj

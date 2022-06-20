@@ -11,7 +11,7 @@ import Notification from './components/Notification'
 import { addAnecdote } from './reducers/anecdoteReducer'
 
 // SERVICES
-import { getAll } from './services/anecdotes'
+import anecdoteServices from './services/anecdotes'
 
 const App = () => {
   // this is where we use getAll to dispatch initial request to server about data that should be rendered first!
@@ -20,7 +20,7 @@ const App = () => {
   useEffect(() => {
     // preserving async await, via iife, kinda dumb
     (async () => {
-      const initialAnecdotes = await getAll()
+      const initialAnecdotes = await anecdoteServices.getAll()
       // then assign to redux store via action creator then dispatch
       // assuming that we get an array of obj [{..}, {..}, ..]
       initialAnecdotes.forEach(anecdote => {
