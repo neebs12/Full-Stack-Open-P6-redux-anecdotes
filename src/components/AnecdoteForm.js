@@ -4,9 +4,6 @@ import { useDispatch } from 'react-redux'
 import { addAnecdote } from '../reducers/anecdoteReducer'
 import { setNotification } from '../reducers/notificationReducer' 
 
-// SERVICES
-import anecdoteServices from '../services/anecdotes'
-
 function AnecdoteForm() {
   const dispatch = useDispatch()
   const submitAnecdote = async (e) => {
@@ -17,7 +14,7 @@ function AnecdoteForm() {
     // note of the async action creation nature of addNote. therefore change that setNotification will visually change contents of notification prior it being reflected in the backend!
     // await dispatch(addAnecdote(anecdoteString)) // would this be valid?? -- with await??
     dispatch(addAnecdote(anecdoteString))
-    dispatch(setNotification(`The anecdote: "${anecdoteString}" has been added!!!`))
+    dispatch(setNotification(`The anecdote: "${anecdoteString}" has been added!!!`, 10))
   }
 
   return (
