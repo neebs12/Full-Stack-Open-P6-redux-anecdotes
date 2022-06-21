@@ -19,9 +19,10 @@ function AnecdoteList() {
 
   const vote = (id) => {
     const specificAnecdote = anecdotes.find(a => a.id === id)
+    dispatch(incrementVote(id, specificAnecdote))
+    
     const anecdoteContent = specificAnecdote.content
     const anecdoteVotes = specificAnecdote.votes
-    dispatch(incrementVote(id))
     dispatch(changeNotification(`you have voted on the anecdote: ${anecdoteContent}, the number of votes are now ${anecdoteVotes + 1}!!!`))
   }
 

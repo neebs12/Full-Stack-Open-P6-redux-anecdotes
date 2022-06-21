@@ -2,43 +2,23 @@ import { createSlice } from "@reduxjs/toolkit"
 
 import anecdoteServices from "../services/anecdotes"
 
-const anecdotesAtStart = [
-  // 'If it hurts, do it more often',
-  // 'Adding manpower to a late software project makes it later!',
-  // 'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
-  // 'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
-  // 'Premature optimization is the root of all evil.',
-  // 'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
-]
-
-const getId = () => (100000 * Math.random()).toFixed(0) // used of ini state construction
-
-const asObject = (anecdote) => { // used for initial state construction
-  return {
-    content: anecdote,
-    id: getId(),
-    votes: 0
-  }
-}
-
-const initialState = anecdotesAtStart.map(asObject)
-
 const anecdoteSlice = createSlice({
   name: 'anecdote',
-  initialState: initialState, // imperative
+  initialState: [], // initial state set to empty array >:)
   reducers: {
-    incrementVote(state, action) {
-      // can mutate state within createSlice
-      // state is an array (at this location)
-      
-      const id = action.payload
-      const specificState = state.find(s => s.id === id)
-      if (specificState) {
-        // found a specific state
-        // mutation
-        specificState.votes = specificState.votes + 1
+    updateAnecdote(state, action) {
+      // action.payload contains
+      /*
+      {
+        id: id (number),
+        anecdote: anecdote (obj)
       }
-      // no need to return due to mutation
+      */
+      // then find the index of the anecdote to be updated, then mutate the array of object by reassigning that index to the new object!
+      const id = action.payload.id
+      const anecdote = action.payload.anecdote
+      const indexToReplace = state.findIndex(s => s.id === id)
+      state[indexToReplace] = anecdote // viola, state has been updated (mutation allowed with (?)thunk(?))
     },
     appendAnecdote(state, action) {
       const anecdote = action.payload
@@ -47,7 +27,7 @@ const anecdoteSlice = createSlice({
   }
 })
 
-export const {incrementVote, appendAnecdote} = anecdoteSlice.actions
+export const {updateAnecdote, appendAnecdote} = anecdoteSlice.actions
 
 // THUNKS - async action creators!
 export const initializeAnecdotes = () => {
@@ -73,9 +53,19 @@ export const addAnecdote = (anecdoteString) => {
   }
 }
 
-export const changeVote = (id) => {
+export const incrementVote = (id, anecdote) => {
   return async (dispatch) => {
-    // 
+    // with id, we are incrementing its vote value
+    // since we can trust that the front end state is consistent with the backend state, im sure we can use the front end state as a state substitute for updating! :D
+    // -- this is so we would not need to N+1 request information from the server
+    // also, this is where we would call upon the action
+    // the whole anecdote object had to be passed in here as this would be the object to be passed to the client api
+    // id is required for the update anecdote action
+    // we will be incrementing here
+    // shallow copy & increment
+    anecdote = {...anecdote, votes: anecdote.votes + 1} 
+    await anecdoteServices.updateAnecdote(id, anecdote)
+    dispatch(updateAnecdote({id, anecdote}))
   }
 }
 
