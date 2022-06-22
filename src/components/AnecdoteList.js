@@ -23,7 +23,8 @@ function AnecdoteList() {
 
     const anecdoteContent = specificAnecdote.content
     const anecdoteVotes = specificAnecdote.votes
-    dispatch(setNotification(`you have voted on the anecdote: ${anecdoteContent}, the number of votes are now ${anecdoteVotes + 1}!!!`, 5))
+    dispatch(setNotification(`you have voted on the anecdote: ${anecdoteContent}, 
+      the number of votes are now ${anecdoteVotes + 1}!!!`, 5))
   }
 
   return (
